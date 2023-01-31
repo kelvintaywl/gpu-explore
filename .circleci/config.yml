@@ -1,24 +1,41 @@
 version: 2.1
 
+executors:
+  gpu_small:
+    parameters:
+      dlc:
+        type: boolean
+        default: false
+    machine:
+      image: ubuntu-2004-cuda-11.4:202110-01
+      docker_layer_caching: << parameters.dlc >>
+    resource_class: gpu.nvidia.small
+
 jobs:
   build:
     parameters:
       parallel:
         type: integer
-        default: 3
+        default: 1
     parallelism: << parameters.parallel >>
-    machine:
-      image: ubuntu-2004-cuda-11.4:202110-01
-      docker_layer_caching: true
-    resource_class: gpu.nvidia.small
+    executor:
+      name: gpu_small
+      dlc: true
     steps:
       - run: lsb_release -a
       - run: uname -a
       - run: docker info
       - checkout
       - run: docker image build -t fancy-nginx:gpu .
+  pull:
+    executor:
+      name: gpu_small
+      dlc: true
+    steps:
+      - run: docker pull slightlytyler/large-image-test:latest
 
 workflows:
   main:
     jobs:
       - build
+      - pull

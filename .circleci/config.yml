@@ -9,3 +9,6 @@ jobs:
       - run: lsb_release -a
       - run: uname -a
       - run: docker info
+      - checkout
+      - run: docker image build -t fancy-nginx:gpu .
+

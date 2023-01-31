@@ -2,8 +2,14 @@ version: 2.1
 
 jobs:
   build:
+    parameters:
+      parallel:
+        type: integer
+        default: 3
+    parallelism: << parameters.parallel >>
     machine:
       image: ubuntu-2004-cuda-11.4:202110-01
+      docker_layer_caching: true
     resource_class: gpu.nvidia.small
     steps:
       - run: lsb_release -a
@@ -12,3 +18,7 @@ jobs:
       - checkout
       - run: docker image build -t fancy-nginx:gpu .
 
+workflows:
+  main:
+    jobs:
+      - build

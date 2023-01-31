@@ -11,6 +11,11 @@ executors:
       docker_layer_caching: << parameters.dlc >>
     resource_class: gpu.nvidia.small
 
+commands:
+  purge-dlc:
+    steps:
+      - run: docker system prune --volumes
+
 jobs:
   build:
     parameters:
@@ -26,6 +31,7 @@ jobs:
       - run: uname -a
       - run: docker info
       - checkout
+      - purge-dlc
       - run: docker image build -t fancy-nginx:gpu .
   pull:
     executor:
@@ -33,6 +39,7 @@ jobs:
       dlc: true
     steps:
       # approx 5GB
+      - purge-dlc
       - run: docker pull slightlytyler/large-image-test:latest
 
 workflows:

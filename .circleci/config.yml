@@ -14,7 +14,7 @@ executors:
 commands:
   purge-dlc:
     steps:
-      - run: docker system prune --force --volumes
+      - run: docker system prune --force --volumes --all
 
 jobs:
   build:

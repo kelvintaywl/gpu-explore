@@ -32,6 +32,7 @@ jobs:
       name: gpu_small
       dlc: true
     steps:
+      # approx 5GB
       - run: docker pull slightlytyler/large-image-test:latest
 
 workflows:

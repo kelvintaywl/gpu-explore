@@ -8,3 +8,4 @@ jobs:
     steps:
       - run: lsb_release -a
       - run: uname -a
+      - run: docker info

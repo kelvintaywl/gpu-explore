@@ -38,8 +38,8 @@ jobs:
       name: gpu_small
       dlc: true
     steps:
-      # approx 5GB
       - purge-dlc
+      - run: docker pull kelvintaywl/large:15GB
       - run: docker pull slightlytyler/large-image-test:latest
 
 workflows:

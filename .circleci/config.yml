@@ -32,7 +32,7 @@ jobs:
       - run: docker info
       - checkout
       - purge-dlc
-      - run: docker image build -t fancy-nginx:gpu .
+      - run: docker image build -t kelvintaywl/large-image -f Dockerfile.xlarge .
   pull:
     executor:
       name: gpu_small
@@ -46,4 +46,6 @@ workflows:
   main:
     jobs:
       - build
-      - pull
+      - pull:
+          requires:
+            - build
